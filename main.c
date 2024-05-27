@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h> // for Sleep function
 
 #define MIN_BET 1
 
@@ -15,6 +16,9 @@ void withdraw(int *balance, int amount) {
         printf("Withdrawal successful. Current balance: %d\n", *balance);
     } else {
         printf("Insufficient balance. Current balance: %d\n", *balance);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
     }
 }
 
@@ -23,10 +27,13 @@ int game1(int *balance, int bet) {
 
     if (*balance < bet) {
         printf("Insufficient balance. Current balance: %d\n", *balance);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return 0;
     }
 
-    srand(time(NULL));
+    srand(time(NULL));//seed random number, else same series will be generated
     secret_number = rand() % 10 + 1;
 
     printf("Guess a number between 1 and 10.\n");
@@ -35,10 +42,14 @@ int game1(int *balance, int bet) {
     if (user_guess == secret_number) {
         *balance += bet * 10;
         printf("Congratulations! You won %d. Current balance: %d\n", bet * 10, *balance);
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return;
     } else {
         *balance -= bet;
         printf("Sorry, you lost. Current balance: %d\n", *balance);
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return;
     }
 }
@@ -46,17 +57,17 @@ int game1(int *balance, int bet) {
 void game2(void) {
     printf("Game 2: Under development.\n");
 }
-
 int main() {
     int balance = 0, amount, bet, choice;
-
+printf("\nWelcome to the Casino!\n");
     while (1) {
-        printf("\nWelcome to the Casino!\n");
-        printf("1. Deposit\n");
+        system("cls");
+        printf("\n1. Deposit\n");
         printf("2. Withdraw\n");
         printf("3. Play Game 1\n");
         printf("4. Play Game 2\n");
         printf("5. Exit\n");
+        printf("Your Balance : %d\n",balance);
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -74,27 +85,32 @@ int main() {
             case 3:
                 if (balance < MIN_BET) {
                     printf("Insufficient balance. Current balance: %d\n", balance);
+                    printf("Press any key to continue...\n");
+                    getchar(); // read a character
+                    getchar(); // wait for Enter key
                     break;
                 }
                 printf("Enter the bet amount (minimum %d): ", MIN_BET);
                 scanf("%d", &bet);
-                //game1(&balance, bet);
                 while (game1(&balance, bet)) {
                     printf("Do you want to play again? (y/n): ");
                     char play_again;
                     scanf(" %c", &play_again);
                     if (play_again == 'y' || play_again == 'Y') {
+                        if (balance < MIN_BET) {
+                            printf("Insufficient balance. Current balance: %d\n", balance);
+                            printf("Press any key to continue...\n");
+                            getchar(); // read a character
+                            getchar(); // wait for Enter key
+                            break;
+                        }
+                        printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                        scanf("%d", &bet);
                         continue;
                     }
                     else
                         break;
                 }
-                /*printf("Do you want to play again? (yes/no): ");
-                    char play_again;
-                    scanf(" %c", &play_again);
-                    if (play_again == 'y' || play_again == 'Y'||play_again == 'yes' || play_again == 'YES'||play_again == 'y' || play_again == 'Yes') {
-                        game1(&balance, bet);
-                    }*/
                 break;
             case 4:
                 game2();
