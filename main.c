@@ -8,11 +8,19 @@
 #define MIN_DEPOSIT 101
 #define MIN_WITHDRAWAL 100
 #define MIN_PLAY_PERCENTAGE 0.8
+#define ROWS 9
+#define COLS 9
+#define MINES 10
 
 typedef struct {
     int balance;
     int total_deposit;
 } Player;
+typedef struct {
+    int isMine;
+    int isRevealed;
+    int adjacentMines;
+} Cell;
 
 void deposit(Player *player, int amount) {
     if (amount < MIN_DEPOSIT) {
@@ -129,9 +137,130 @@ int game2(Player *player, int bet) {
     return;
 }
 
+void initializeBoard(Cell board[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            board[i][j].isMine = 0;
+            board[i][j].isRevealed = 0;
+            board[i][j].adjacentMines = 0;
+        }
+    }
+}
+
+void placeMines(Cell board[ROWS][COLS]) {
+    srand(time(NULL));
+    int placedMines = 0;
+    while (placedMines < MINES) {
+        int r = rand() % ROWS;
+        int c = rand() % COLS;
+        if (!board[r][c].isMine) {
+            board[r][c].isMine = 1;
+            placedMines++;
+        }
+    }
+}
+
+void calculateAdjacentMines(Cell board[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (board[i][j].isMine) continue;
+            int mineCount = 0;
+            for (int r = -1; r <= 1; r++) {
+                for (int c = -1; c <= 1; c++) {
+                    int newRow = i + r;
+                    int newCol = j + c;
+                    if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS && board[newRow][newCol].isMine) {
+                        mineCount++;
+                    }
+                }
+            }
+            board[i][j].adjacentMines = mineCount;
+        }
+    }
+}
+
+void printBoard(Cell board[ROWS][COLS], int reveal) {
+    printf("    ");
+    for (int i = 0; i < COLS; i++) printf("%d ", i);
+    printf("\n   ");
+    for (int i = 0; i < COLS; i++) printf("--");
+    printf("\n");
+
+    for (int i = 0; i < ROWS; i++) {
+        printf("%d | ", i);
+        for (int j = 0; j < COLS; j++) {
+            if (reveal || board[i][j].isRevealed) {
+                if (board[i][j].isMine) printf("* ");
+                else printf("%d ", board[i][j].adjacentMines);
+            } else {
+                printf("# ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void revealCell(Cell board[ROWS][COLS], int row, int col) {
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS || board[row][col].isRevealed) return;
+    board[row][col].isRevealed = 1;
+
+    if (board[row][col].adjacentMines == 0) {
+        for (int r = -1; r <= 1; r++) {
+            for (int c = -1; c <= 1; c++) {
+                revealCell(board, row + r, col + c);
+            }
+        }
+    }
+}
+
+int game3(Player *player, int bet) {
+    Cell board[ROWS][COLS];
+    initializeBoard(board);
+    placeMines(board);
+    calculateAdjacentMines(board);
+
+    int gameOver = 0;
+    int reward = 0;
+    while (!gameOver) {
+        system("cls");
+        printBoard(board, 0);
+        int row, col;
+        printf("Enter row and column to reveal: ");
+        scanf("%d%d", &row, &col);
+
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
+            printf("Invalid input. Try again.\n");
+            continue;
+        }
+
+        if (board[row][col].isMine) {
+            printf("Game Over! You hit a mine.\n");
+            //
+            printBoard(board, 1);
+            player->balance -= bet;
+            printf("You lost %d credits. Your current balance is %d credits.\n", bet, player->balance);
+            return;
+        } else {
+            revealCell(board, row, col);
+            reward += bet*5;
+            printf("You won %d credits.", bet*5);
+            printf("Do you want to withdraw or continue? (0 to withdraw, 1 to continue): ");
+            int choice;
+            scanf("%d", &choice);
+            if (choice == 0) {
+                player->balance += reward;
+                player->total_deposit += bet;
+                printf("You have withdrawn %d credits. Your current balance is %d credits.\n", reward, player->balance);
+                return;
+            }
+        }
+    }
+}
+/*
 void game3(){
 printf("Game is under Development\n");
 }
+*/
 int main() {
     Player player1 = {0, 0};
     Player player2 = {0, 0};
@@ -301,7 +430,72 @@ int main() {
                 getchar(); // wait for Enter key
                 break;
             case 5:
-                game3();
+                /*
+                printf("You will play Coded Danger. The rules are as follows:\n");
+                printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
+                printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
+                printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose %d credits.\n", bet);
+                printf("- You will have the option to withdraw or continue after each move.\n");
+                printf("- Your bet for each game is same.\n");
+                printf("- If you choose to withdraw, you will lose the current bet and withdrawal amount.\n");
+                */
+                printf("Enter the player number (1 or 2): ");
+                scanf("%d", &player_choice);
+                if (player_choice == 1) {
+                    if (player1.balance < MIN_BET) {
+                        printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        break;
+                    }
+                    printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                    scanf("%d", &bet);
+                    while (game3(&player1, bet)) {
+                        printf("Do you want to play again? (y/n): ");
+                        char play_again;
+                        scanf(" %c", &play_again);
+                        if (play_again == 'y' || play_again == 'Y') {
+                            if (player1.balance < MIN_BET) {
+                                printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                break;
+                            }
+                            printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                            scanf("%d", &bet);
+                            continue;
+                        }
+                        else
+                            break;
+                    }
+                } else if (player_choice == 2) {
+                    if (player2.balance < MIN_BET) {
+                        printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        break;
+                    }
+                    printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                    scanf("%d", &bet);
+                    while (game3(&player2, bet)) {
+                        printf("Do you want to play again? (y/n): ");
+                        char play_again;
+                        scanf(" %c", &play_again);
+                        if (play_again == 'y' || play_again == 'Y') {
+                            if (player2.balance < MIN_BET) {
+                                printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                break;
+                            }
+                            printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                            scanf("%d", &bet);
+                            continue;
+                        }
+                        else
+                            break;
+                    }
+                } else {
+                    printf("Invalid player number. Please try again.\n");
+                }
+                printf("Press any key to continue...\n");
+                getchar(); // read a character
+                getchar(); // wait for Enter key
+                break;
+                //game3(&player1, 10);
+                //game3();
                 printf("Press any key to continue...\n");
                 getchar(); // read a character
                 getchar(); // wait for Enter key
