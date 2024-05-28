@@ -256,11 +256,11 @@ int game3(Player *player, int bet) {
         }
     }
 }
-/*
-void game3(){
+
+void game4(){
 printf("Game is under Development\n");
 }
-*/
+
 int main() {
     Player player1 = {0, 0};
     Player player2 = {0, 0};
@@ -274,7 +274,8 @@ int main() {
         printf(" 3. Play Number Hunt\n");
         printf(" 4. Play Number Ambush\n");
         printf(" 5. Play Coded Danger\n");
-        printf(" 6. Exit\n");
+        printf(" 6. Play High Card(PVP)\n");
+        printf(" 7. Exit\n");
         printf("Player 1 Balance: %d\n", player1.balance);
         printf("Player 2 Balance: %d\n", player2.balance);
         printf("Enter your choice: ");
@@ -501,6 +502,12 @@ int main() {
                 getchar(); // wait for Enter key
                 break;
             case 6:
+                game4();
+                printf("Press any key to continue...\n");
+                getchar(); // read a character
+                getchar(); // wait for Enter key
+                break;
+            case 7:
                 exit(0);
             default:
                 printf("Invalid choice. Please try again.\n");
