@@ -249,8 +249,8 @@ int game3(Player *player, int bet) {
             return;
         } else {
             revealCell(board, row, col);
-            reward += bet*5;
-            printf("You won %d credits.", bet*5);
+            reward += (int)(bet*0.5);
+            printf("You won %d credits.", (int)(bet*0.5));
             printf("Do you want to withdraw or continue? (0 to withdraw, 1 to continue): ");
             int choice;
             scanf("%d", &choice);
@@ -523,6 +523,21 @@ int main() {
                 getchar(); // wait for Enter key
                 break;
             case 5:
+                system("cls");
+                printf("______________________________________________________________________________________________________________________\n\n");
+                printf("                                          Coded Danger : RULES\n");
+                printf("______________________________________________________________________________________________________________________\n\n");
+                printf("You will play Coded Danger. The rules are as follows:\n");
+                printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
+                printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
+                printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
+                printf("- For Each round the reward will increase by 5%%.\n");
+                printf("- You will have the option to withdraw or continue after each move.\n");
+                printf("- Your bet for each round of the game you continue is same.\n");
+                printf("- If you choose to withdraw, you will lose the current bet.\n");
+                printf("______________________________________________________________________________________________________________________\n\n");
+                printf("Player 1 Balance: %d\n", player1.balance);
+                printf("Player 2 Balance: %d\n\n", player2.balance);
                 printf("Enter the player number (1 or 2): ");
                 scanf("%d", &player_choice);
                 if (player_choice == 1) {
@@ -541,8 +556,20 @@ int main() {
                         scanf(" %c", &play_again);
                         if (play_again == 'y' || play_again == 'Y') {
                             system("cls");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("                                          Coded Danger : RULES\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("You will play Coded Danger. The rules are as follows:\n");
+                            printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
+                            printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
+                            printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
+                            printf("- For Each round the reward will increase by 5%%.\n");
+                            printf("- You will have the option to withdraw or continue after each move.\n");
+                            printf("- Your bet for each round of the game you continue is same.\n");
+                            printf("- If you choose to withdraw, you will lose the current bet.\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
-                            printf("Player 2 Balance: %d\n", player2.balance);
+                            printf("Player 2 Balance: %d\n\n", player2.balance);
                             if (player1.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player1.balance);
                                 printf("Press any key to continue...\n");
