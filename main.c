@@ -47,14 +47,6 @@ void withdraw(Player *player, int amount) {
         getchar(); // wait for Enter key
         return;
     }
-    /*
-    if (player->total_deposit > 0 && player->balance - amount < player->total_deposit * MIN_PLAY_PERCENTAGE) {
-        printf("You must play at least %d%% of your deposit before withdrawal.\n", (int)(MIN_PLAY_PERCENTAGE * 100));
-        printf("Press any key to continue...\n");
-        getchar(); // read a character
-        getchar(); // wait for Enter key
-        return;
-    }*/
     player->balance -= amount;
     printf("Withdrawal successful. Current balance: %d\n", player->balance);
     printf("Press any key to continue...\n");
@@ -272,13 +264,61 @@ int game3(Player *player, int bet) {
     }
 }
 
-void game4(){
-printf("Game is under Development\n");
+int game4(Player* player1, Player* player2, int bet1, int bet2) {
+  int player1_guess, player2_guess, target_number;
+  if (bet1 < MIN_BET||bet2<MIN_BET) {
+        printf("Minimum bet is %d credits.\n", MIN_BET);
+        return 0;
+    }
+  if (bet1 > MAX_BET||bet2> MAX_BET) {
+        printf("Maximum bet is %d credits.\n", MAX_BET);
+        return 0;
+    }
+  if (player1->balance < bet1) {
+        printf("Insufficient balance in player1 accoount. Current balance: %d\n", player1->balance);
+        return 0;
+    }
+  if (player2->balance < bet2) {
+        printf("Insufficient balance in player2 account. Current balance: %d\n", player2->balance);
+        return 0;
+    }
+  printf("Welcome to High Card!\n");
+  srand(time(NULL));
+  target_number = rand() % (100 - 1 + 1) + 1;
+  printf("\nPlayer 1, guess a number between 1 and 100: ");
+  scanf("%d", &player1_guess);
+  printf("\nPlayer 2, guess a number between 1 and 100: ");
+  scanf("%d", &player2_guess);
+  int player1_diff = abs(player1_guess - target_number);
+  int player2_diff = abs(player2_guess - target_number);
+
+  if (player1_diff < player2_diff) {
+    printf("\nTarget number: %d\n", target_number);
+    printf("Player 1 wins!\n");
+    printf("Reward: %d\n", (int)(0.9 * bet2));
+    player1->balance += (int)(0.9 * bet2);
+    printf("Player 1's new balance: %d\n", player1->balance);
+  } else if (player1_diff > player2_diff) {
+    printf("\nTarget number: %d\n", target_number);
+    printf("Player 2 wins!\n");
+    printf("Reward: %d\n", (int)(0.9 * bet2));
+    player2->balance += (int)(0.9 * bet2);
+    printf("Player 2's new balance: %d\n", player2->balance);
+  } else {
+    printf("\nTarget number: %d\n", target_number);
+    printf("It's a tie!\n");
+    printf("Both player win 90%% of their bet");
+    player1->balance += (int)(0.9 * bet1);
+    player2->balance += (int)(0.9 * bet2);
+    printf("Player 1's new balance: %d\n", player1->balance);
+    printf("Player 2's new balance: %d\n", player2->balance);
+  }
 }
 
 int main() {
     Player player1 = {0, 0};
     Player player2 = {0, 0};
+    int bet1, bet2;
     int choice, bet, player_choice;
 
     printf("\nWelcome to the Casino!\n");
@@ -546,14 +586,53 @@ int main() {
                 getchar(); // read a character
                 getchar(); // wait for Enter key
                 break;
-                //game3(&player1, 10);
-                //game3();
-                printf("Press any key to continue...\n");
-                getchar(); // read a character
-                getchar(); // wait for Enter key
-                break;
             case 6:
-                game4();
+                 if (player1.balance < MIN_BET) {
+                        printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
+                        break;
+                    }
+                printf("Enter player 1's bet: ");
+                scanf("%d", &bet1);
+                 if (player2.balance < MIN_BET) {
+                        printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
+                        break;
+                    }
+                printf("Enter player 2's bet: ");
+                scanf("%d", &bet2);
+                while (game4(&player1, &player2, bet1, bet2)) {
+                        printf("Do you want to play again? (y/n): ");
+                        char play_again;
+                        scanf(" %c", &play_again);
+                        if (play_again == 'y' || play_again == 'Y') {
+                            if (player1.balance < MIN_BET) {
+                                printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
+                                break;
+                    }
+                        printf("Enter player 1's bet: ");
+                        scanf("%d", &bet1);
+                         if (player2.balance < MIN_BET) {
+                                printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
+                                break;
+                            }
+                        printf("Enter player 2's bet: ");
+                        scanf("%d", &bet2);
+                        continue;
+                        }
+                        else
+                            break;
+                    }
                 printf("Press any key to continue...\n");
                 getchar(); // read a character
                 getchar(); // wait for Enter key
