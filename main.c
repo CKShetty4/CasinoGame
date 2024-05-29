@@ -67,14 +67,23 @@ int game1(Player *player, int bet) {
 
     if (bet < MIN_BET) {
         printf("Minimum bet is %d credits.\n", MIN_BET);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return 0;
     }
     if (bet > MAX_BET) {
         printf("Maximum bet is %d credits.\n", MAX_BET);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return 0;
     }
     if (player->balance < bet) {
         printf("Insufficient balance. Current balance: %d\n", player->balance);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return 0;
     }
 
@@ -87,10 +96,16 @@ int game1(Player *player, int bet) {
     if (user_guess == secret_number) {
         player->balance += bet * 10;
         printf("Congratulations! You won %d. Current balance: %d\n", bet * 10, player->balance);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return 1;
     } else {
         player->balance -= bet;
-        printf("Sorry, you lost. Current balance: %d\n", player->balance);
+        printf("Sorry, you lost. The number was %d. Current balance: %d\n",secret_number, player->balance);
+        printf("Press any key to continue...\n");
+        getchar(); // read a character
+        getchar(); // wait for Enter key
         return 1;
     }
 }
@@ -324,6 +339,9 @@ int main() {
                 if (player_choice == 1) {
                     if (player1.balance < MIN_BET) {
                         printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
                         break;
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -335,6 +353,9 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             if (player1.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
                                 break;
                             }
                             printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -347,6 +368,9 @@ int main() {
                 } else if (player_choice == 2) {
                     if (player2.balance < MIN_BET) {
                         printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
                         break;
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -358,6 +382,9 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             if (player2.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
                                 break;
                             }
                             printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -380,6 +407,9 @@ int main() {
                 if (player_choice == 1) {
                     if (player1.balance < MIN_BET) {
                         printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
                         break;
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -391,6 +421,9 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             if (player1.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
                                 break;
                             }
                             printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -403,6 +436,9 @@ int main() {
                 } else if (player_choice == 2) {
                     if (player2.balance < MIN_BET) {
                         printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
                         break;
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -414,6 +450,9 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             if (player2.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
                                 break;
                             }
                             printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -445,6 +484,9 @@ int main() {
                 if (player_choice == 1) {
                     if (player1.balance < MIN_BET) {
                         printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
                         break;
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -456,6 +498,9 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             if (player1.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
                                 break;
                             }
                             printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -468,6 +513,9 @@ int main() {
                 } else if (player_choice == 2) {
                     if (player2.balance < MIN_BET) {
                         printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        printf("Press any key to continue...\n");
+                        getchar(); // read a character
+                        getchar(); // wait for Enter key
                         break;
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
@@ -479,6 +527,9 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             if (player2.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                printf("Press any key to continue...\n");
+                                getchar(); // read a character
+                                getchar(); // wait for Enter key
                                 break;
                             }
                             printf("Enter the bet amount (minimum %d): ", MIN_BET);
