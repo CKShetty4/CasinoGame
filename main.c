@@ -11,7 +11,7 @@
 #define ROWS 9
 #define COLS 9
 #define MINES 10
-
+//new
 typedef struct {
     int balance;
     int total_deposit;
