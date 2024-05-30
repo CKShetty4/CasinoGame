@@ -297,19 +297,21 @@ int game4(Player* player1, Player* player2, int bet1, int bet2) {
     printf("Player 1 wins!\n");
     printf("Reward: %d\n", (int)(0.9 * bet2));
     player1->balance += (int)(0.9 * bet2);
+    player2->balance -= bet2;
     printf("Player 1's new balance: %d\n", player1->balance);
   } else if (player1_diff > player2_diff) {
     printf("\nTarget number: %d\n", target_number);
     printf("Player 2 wins!\n");
-    printf("Reward: %d\n", (int)(0.9 * bet2));
-    player2->balance += (int)(0.9 * bet2);
+    printf("Reward: %d\n", (int)(0.9 * bet1));
+    player2->balance += (int)(0.9 * bet1);
+    player1->balance -=  bet1;
     printf("Player 2's new balance: %d\n", player2->balance);
   } else {
     printf("\nTarget number: %d\n", target_number);
     printf("It's a tie!\n");
     printf("Both player win 80%% of their bet");
-    player1->balance += (int)(0.8 * bet1);
-    player2->balance += (int)(0.8 * bet2);
+    player1->balance +=bet- (int)(0.8 * bet1);
+    player2->balance +=bet- (int)(0.8 * bet2);
     printf("Player 1's new balance: %d\n", player1->balance);
     printf("Player 2's new balance: %d\n", player2->balance);
   }
