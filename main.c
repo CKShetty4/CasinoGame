@@ -11,7 +11,7 @@
 #define ROWS 9
 #define COLS 9
 #define MINES 10
-//new
+
 typedef struct {
     int balance;
     int total_deposit;
@@ -309,9 +309,9 @@ int game4(Player* player1, Player* player2, int bet1, int bet2) {
   } else {
     printf("\nTarget number: %d\n", target_number);
     printf("It's a tie!\n");
-    printf("Both player win 80%% of their bet");
-    player1->balance +=bet- (int)(0.8 * bet1);
-    player2->balance +=bet- (int)(0.8 * bet2);
+    printf("Both player win 80%% of their bet\n");
+    player1->balance +=bet1- (int)(0.2 * bet1);
+    player2->balance +=bet2- (int)(0.2 * bet2);
     printf("Player 1's new balance: %d\n", player1->balance);
     printf("Player 2's new balance: %d\n", player2->balance);
   }
