@@ -59,17 +59,14 @@ int game1(Player *player, int bet){ //Number Hunt Game
     int secret_number, user_guess;
     if (bet < MIN_BET) {
         printf("Minimum bet is %d credits.\n", MIN_BET);
-        wait();
         return 0;
     }
     if (bet > MAX_BET) {
         printf("Maximum bet is %d credits.\n", MAX_BET);
-        wait();
         return 0;
     }
     if (player->balance < bet) {
         printf("Insufficient balance. Current balance: %d\n", player->balance);
-        wait();
         return 0;
     }
     srand(time(NULL));//seed random number, else same series will be generated
@@ -77,8 +74,8 @@ int game1(Player *player, int bet){ //Number Hunt Game
     printf("Guess a number between 1 and 10.\n");
     scanf("%d", &user_guess);
     if (user_guess == secret_number) {
-        player->balance += bet * 10;
-        printf("Congratulations! You won %d. Current balance: %d\n", bet * 10, player->balance);
+        player->balance += bet*0.1;
+        printf("Congratulations! You won %d. Current balance: %d\n", bet * 0.1, player->balance);
         wait();
         return 1;
     } else {
@@ -89,8 +86,8 @@ int game1(Player *player, int bet){ //Number Hunt Game
     }
 }
 
-int game2(Player *player, int bet)//Number Ambush Game
- {
+int game2(Player *player, int bet){//Number Ambush Game
+
     int n, count = 1;
     char input;
 
@@ -118,9 +115,9 @@ int game2(Player *player, int bet)//Number Ambush Game
         fflush(stdout); // force the output to be printed immediately
         if (kbhit()) { // check if a key is pressed
             scanf(" %c", &input); // consume the input
-            player->balance += (int)round(bet * count/100);
+            player->balance += (int)(bet * count/100);
             //*balance += bet * count;
-            printf("\nCongratulations! You won %d. Current balance: %d\n", (int)round(bet * count/100), player->balance);
+            printf("\nCongratulations! You won %d. Current balance: %d\n", (int)(bet * count/100), player->balance);
             return;
         }
         Sleep(10); // wait for 10 milliseconds
@@ -132,6 +129,7 @@ int game2(Player *player, int bet)//Number Ambush Game
     return;
 }
 
+//-----------------------------------Mines Game Code Starts here-------------------------------------------
 void initializeBoard(Cell board[ROWS][COLS]) {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
@@ -208,7 +206,7 @@ void revealCell(Cell board[ROWS][COLS], int row, int col) {
     }
 }
 
-int game3(Player *player, int bet) {
+int game3(Player *player, int bet) {//Coded Danger Alias Mines Game
     Cell board[ROWS][COLS];
     initializeBoard(board);
     placeMines(board);
@@ -251,8 +249,10 @@ int game3(Player *player, int bet) {
         }
     }
 }
+//-----------------------------------Mines Game Code Ends here-------------------------------------------
 
-int game4(Player* player1, Player* player2, int bet1, int bet2) {
+
+int game4(Player* player1, Player* player2, int bet1, int bet2) {//High Card an player vs player Game
   int player1_guess, player2_guess, target_number;
   if (bet1 < MIN_BET||bet2<MIN_BET) {
         printf("Minimum bet is %d credits.\n", MIN_BET);
@@ -375,7 +375,7 @@ int main() {
                 printf("- The player needs to enter the bet amount.\n");
                 printf("- System generates a random number form 1 to 10\n");
                 printf("- Your goal is to guess the number. \n");
-                printf("- If your guess is wrong, you loose bet amount credits. And if your guess is right You win 10%% of the bet amount");
+                printf("- If your guess is wrong, you loose bet amount credits. And if your guess is right You win 10%% of the bet amount\n");
                 printf("______________________________________________________________________________________________________________________\n\n");
                 printf("Player 1 Balance: %d\n", player1.balance);
                 printf("Player 2 Balance: %d\n\n", player2.balance);
@@ -402,7 +402,7 @@ int main() {
                             printf("- The player needs to enter the bet amount.\n");
                             printf("- System generates a random number form 1 to 10\n");
                             printf("- Your goal is to guess the number. \n");
-                            printf("- If your guess is wrong, you loose bet amount credits. And if your guess is right You win 10%% of the bet amount");
+                            printf("- If your guess is wrong, you loose bet amount credits. And if your guess is right You win 10%% of the bet amount\n");
                             printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
                             printf("Player 2 Balance: %d\n\n", player2.balance);
@@ -432,8 +432,17 @@ int main() {
                         scanf(" %c", &play_again);
                         if (play_again == 'y' || play_again == 'Y') {
                             system("cls");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("                                          Number Hunt : RULES\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("You will play Number Hunt. The rules are as follows:\n");
+                            printf("- The player needs to enter the bet amount.\n");
+                            printf("- System generates a random number form 1 to 10\n");
+                            printf("- Your goal is to guess the number. \n");
+                            printf("- If your guess is wrong, you loose bet amount credits. And if your guess is right You win 10%% of the bet amount\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
-                            printf("Player 2 Balance: %d\n", player2.balance);
+                            printf("Player 2 Balance: %d\n\n", player2.balance);
 
                             if (player2.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player2.balance);
@@ -460,11 +469,8 @@ int main() {
                 printf("You will play Number Ambush. The rules are as follows:\n");
                 printf("- The player needs to enter the bet amount.\n");
                 printf("- As soon as the player presses the enter key. System starts to generate number form 1 to 100\n");
-                printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
-                printf("- For Each round the reward will increase by 5%%.\n");
-                printf("- You will have the option to withdraw or continue after each move.\n");
-                printf("- Your bet for each round of the game you continue is same.\n");
-                printf("- If you choose to withdraw, you will lose the current bet.\n");
+                printf("- If you succeed in stopping the ambush. The number you have stopped will be the percent of profit you gain.\n");
+                printf("- If you fail to stop before the ambush you lose the current bet.\n");
                 printf("______________________________________________________________________________________________________________________\n\n");
                 printf("Player 1 Balance: %d\n", player1.balance);
                 printf("Player 2 Balance: %d\n\n", player2.balance);
@@ -484,8 +490,17 @@ int main() {
                         scanf(" %c", &play_again);
                         if (play_again == 'y' || play_again == 'Y') {
                             system("cls");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("                                          Number Ambush : RULES\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("You will play Number Ambush. The rules are as follows:\n");
+                            printf("- The player needs to enter the bet amount.\n");
+                            printf("- As soon as the player presses the enter key. System starts to generate number form 1 to 100\n");
+                            printf("- If you succeed in stopping the ambush. The number you have stopped will be the percent of profit you gain.\n");
+                            printf("- If you fail to stop before the ambush you lose the current bet.\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
-                            printf("Player 2 Balance: %d\n", player2.balance);
+                            printf("Player 2 Balance: %d\n\n", player2.balance);
                             if (player1.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player1.balance);
                                 wait();
@@ -512,8 +527,17 @@ int main() {
                         scanf(" %c", &play_again);
                         if (play_again == 'y' || play_again == 'Y') {
                             system("cls");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("                                          Number Ambush : RULES\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("You will play Number Ambush. The rules are as follows:\n");
+                            printf("- The player needs to enter the bet amount.\n");
+                            printf("- As soon as the player presses the enter key. System starts to generate number form 1 to 100\n");
+                            printf("- If you succeed in stopping the ambush. The number you have stopped will be the percent of profit you gain.\n");
+                            printf("- If you fail to stop before the ambush you lose the current bet.\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
-                            printf("Player 2 Balance: %d\n", player2.balance);
+                            printf("Player 2 Balance: %d\n\n", player2.balance);
                             if (player2.balance < MIN_BET) {
                                 printf("Insufficient balance. Current balance: %d\n", player2.balance);
                                 wait();
