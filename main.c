@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h> // for Sleep function
-#include <math.h>
+
+
 #define MIN_BET 10
 #define MAX_BET 10000
 #define MIN_DEPOSIT 101
@@ -10,6 +11,14 @@
 #define ROWS 9
 #define COLS 9
 #define MINES 10
+/*
+#define SYMBOLS 7
+#define ROWS 3
+#define COLS 3
+
+char symbols[] = {'7', '@', '&', '?', '-', '[', '('};
+char matrix[ROWS][COLS];
+*/
 
 typedef struct {
     int balance;
@@ -130,7 +139,7 @@ int game2(Player *player, int bet){//Number Ambush Game
 }
 
 //-----------------------------------Mines Game Code Starts here-------------------------------------------
-void initializeBoard(Cell board[ROWS][COLS]) {
+void initializeBoard(Cell board[ROWS][COLS]) {//The function resets the board.
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             board[i][j].isMine = 0;
@@ -140,7 +149,7 @@ void initializeBoard(Cell board[ROWS][COLS]) {
     }
 }
 
-void placeMines(Cell board[ROWS][COLS]) {
+void placeMines(Cell board[ROWS][COLS]) {// places MINES(10) number of mines randomly on the board.
     srand(time(NULL));
     int placedMines = 0;
     while (placedMines < MINES) {
@@ -153,7 +162,7 @@ void placeMines(Cell board[ROWS][COLS]) {
     }
 }
 
-void calculateAdjacentMines(Cell board[ROWS][COLS]) {
+void calculateAdjacentMines(Cell board[ROWS][COLS]) {//sets the adjacentMines field of the current cell to the mineCount value.
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (board[i][j].isMine) continue;
@@ -172,7 +181,13 @@ void calculateAdjacentMines(Cell board[ROWS][COLS]) {
     }
 }
 
-void printBoard(Cell board[ROWS][COLS], int reveal) {
+void printBoard(Cell board[ROWS][COLS], int reveal) {//prints the current state of the board to the console.
+    /*
+    - It takes an additional reveal parameter, which determines whether to show the contents of each cell or not.
+    - If reveal is 1, it prints the actual contents of each cell (either a mine * or the number of adjacent mines).
+    - If reveal is 0, it prints a # symbol for each cell, indicating that it's hidden.
+    -   The function prints the row and column numbers, as well as a separator line between rows.
+    */
     printf("    ");
     for (int i = 0; i < COLS; i++) printf("%d ", i);
     printf("\n   ");
@@ -193,7 +208,12 @@ void printBoard(Cell board[ROWS][COLS], int reveal) {
     }
 }
 
-void revealCell(Cell board[ROWS][COLS], int row, int col) {
+void revealCell(Cell board[ROWS][COLS], int row, int col) {//reveals a cell on the board and recursively reveals adjacent cells if the current cell has no adjacent mines.
+    /*
+    - It takes the board, row, and col parameters, and checks if the cell is within the board boundaries and not already revealed.
+    - If the cell is valid, it sets the isRevealed field to 1.
+    - If the cell has no adjacent mines, it recursively calls itself for each of the 8 neighboring cells.
+    */
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS || board[row][col].isRevealed) return;
     board[row][col].isRevealed = 1;
 
@@ -205,6 +225,7 @@ void revealCell(Cell board[ROWS][COLS], int row, int col) {
         }
     }
 }
+
 
 int game3(Player *player, int bet) {//Coded Danger Alias Mines Game
     Cell board[ROWS][COLS];
@@ -263,11 +284,11 @@ int game4(Player* player1, Player* player2, int bet1, int bet2) {//High Card an 
         return 0;
     }
   if (player1->balance < bet1) {
-        printf("Insufficient balance in player1 accoount. Current balance: %d\n", player1->balance);
+        printf("Insufficient balance in player 1 account. Current balance: %d\n", player1->balance);
         return 0;
     }
   if (player2->balance < bet2) {
-        printf("Insufficient balance in player2 account. Current balance: %d\n", player2->balance);
+        printf("Insufficient balance in player 2 account. Current balance: %d\n", player2->balance);
         return 0;
     }
   printf("Welcome to High Card!\n");
@@ -308,6 +329,77 @@ int game4(Player* player1, Player* player2, int bet1, int bet2) {//High Card an 
 void game5(){
 printf("Game is under Development");
 }
+
+
+/*
+//---------------------------------------game5 begins here-----------------------------------------
+void generateMatrix() {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            matrix[i][j] = symbols[rand() % SYMBOLS];
+        }
+    }
+}
+
+void displayMatrix() {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%c ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void jackpotParty(int bet) {
+    int reward = 0;
+    for (int i = 0; i < ROWS; i++) {
+        if (matrix[i][0] == '7' && matrix[i][1] == '7' && matrix[i][2] == '7') {
+            reward = 100;
+        } else if (matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) {
+            reward = (rand() % 41) + 10;//random reward from 10% to 50%
+        }
+    }
+    for (int j = 0; j < COLS; j++) {
+        if (matrix[0][j] == '7' && matrix[1][j] == '7' && matrix[2][j] == '7') {
+            reward = 100;
+        } else if (matrix[0][j] == matrix[1][j] && matrix[1][j] == matrix[2][j]) {
+            reward = (rand() % 41) + 10;//random reward from 10% to 50%
+        }
+    }
+    printf("You won %d%% of your bet!\n", reward);
+    if (reward > 0) {
+        printf("Congratulations, you got a reward of %d!\n", (bet * reward) / 100);
+    } else {
+        printf("Sorry, you lost your bet of %d.\n", bet);
+    }
+}
+
+int main() {
+    srand(time(NULL));
+    int bet;
+    char playAgain;
+    do {
+        printf("Welcome to Jackpot Party Lucky Slots Game!\n");
+        printf("Enter your bet: ");
+        scanf("%d", &bet);
+        for (int i = 0; i < 20; i++) {
+            generateMatrix();
+            system("cls"); // Use "cls" on Windows
+            displayMatrix();
+            printf("Spinning...\n");
+            fflush(stdout);
+            usleep(200000);
+            system("cls"); // Use "cls" on Windows
+            displayMatrix();// Pause for 200 milliseconds
+        }
+        jackpotParty(bet);
+        printf("Do you want to play again? (y/n): ");
+        scanf(" %c", &playAgain);
+    } while (playAgain == 'y');
+    return 0;
+}
+
+*/
 
 int main() {
     Player player1 = {0, 0};
@@ -725,6 +817,108 @@ int main() {
                 break;
             case 7:
                 game5();
+                /*
+                system("cls");
+                printf("______________________________________________________________________________________________________________________\n\n");
+                printf("                                         777 JackPot : RULES\n");
+                printf("______________________________________________________________________________________________________________________\n\n");
+                printf("You will play 777 JackPot. The rules are as follows:\n");
+                printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
+                printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
+                printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
+                printf("- For Each round the reward will increase by 5%%.\n");
+                printf("- You will have the option to withdraw or continue after each move.\n");
+                printf("- Your bet for each round of the game you continue is same.\n");
+                printf("- If you choose to withdraw, you will lose the current bet.\n");
+                printf("______________________________________________________________________________________________________________________\n\n");
+                printf("Player 1 Balance: %d\n", player1.balance);
+                printf("Player 2 Balance: %d\n\n", player2.balance);
+                printf("Enter the player number (1 or 2): ");
+                scanf("%d", &player_choice);
+                if (player_choice == 1) {
+                    if (player1.balance < MIN_BET) {
+                        printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        wait();
+                        break;
+                    }
+                    printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                    scanf("%d", &bet);
+                    while (game3(&player1, bet)) {
+                        printf("Do you want to play again? (y/n): ");
+                        char play_again;
+                        scanf(" %c", &play_again);
+                        if (play_again == 'y' || play_again == 'Y') {
+                            system("cls");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("                                          Coded Danger : RULES\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("You will play Coded Danger. The rules are as follows:\n");
+                            printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
+                            printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
+                            printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
+                            printf("- For Each round the reward will increase by 5%%.\n");
+                            printf("- You will have the option to withdraw or continue after each move.\n");
+                            printf("- Your bet for each round of the game you continue is same.\n");
+                            printf("- If you choose to withdraw, you will lose the current bet.\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("Player 1 Balance: %d\n", player1.balance);
+                            printf("Player 2 Balance: %d\n\n", player2.balance);
+                            if (player1.balance < MIN_BET) {
+                                printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                wait();
+                                break;
+                            }
+                            printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                            scanf("%d", &bet);
+                            continue;
+                        }
+                        else
+                            break;
+                    }
+                } else if (player_choice == 2) {
+                    if (player2.balance < MIN_BET) {
+                        printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        wait();
+                        break;
+                    }
+                    printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                    scanf("%d", &bet);
+                    while (game3(&player2, bet)) {
+                        printf("Do you want to play again? (y/n): ");
+                        char play_again;
+                        scanf(" %c", &play_again);
+                        if (play_again == 'y' || play_again == 'Y') {
+                            system("cls");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("                                          Coded Danger : RULES\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("You will play Coded Danger. The rules are as follows:\n");
+                            printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
+                            printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
+                            printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
+                            printf("- For Each round the reward will increase by 5%%.\n");
+                            printf("- You will have the option to withdraw or continue after each move.\n");
+                            printf("- Your bet for each round of the game you continue is same.\n");
+                            printf("- If you choose to withdraw, you will lose the current bet.\n");
+                            printf("______________________________________________________________________________________________________________________\n\n");
+                            printf("Player 1 Balance: %d\n", player1.balance);
+                            printf("Player 2 Balance: %d\n", player2.balance);
+                            if (player2.balance < MIN_BET) {
+                                printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                wait();
+                                break;
+                            }
+                            printf("Enter the bet amount (minimum %d): ", MIN_BET);
+                            scanf("%d", &bet);
+                            continue;
+                        }
+                        else
+                            break;
+                    }
+                } else {
+                    printf("Invalid player number. Please try again.\n");
+                }
+                */
                 wait();
                 break;
             case 8:
