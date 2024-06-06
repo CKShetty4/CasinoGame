@@ -1,8 +1,7 @@
 # depslib dependency file v1.0
-1717526710 source:d:\ckshetty\projects\c\casinogame\main.c
+1717697734 source:d:\ckshetty\projects\c\casinogame\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<windows.h>
-	<math.h>
 

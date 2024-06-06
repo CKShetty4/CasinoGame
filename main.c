@@ -370,7 +370,8 @@ void jackpotParty(Player *player,int bet) {
             printf("\nCongratulations! You won %d. Current balance: %d\n", (int)(bet * reward/100), player->balance);
             return;
     } else {
-        printf("Sorry, you lost y`our bet of %d.\n", bet);
+        player->balance -= bet;
+        printf("\nSorry, you lost. Current balance: %d\n", player->balance);
     }
 }
 
@@ -402,7 +403,7 @@ int game5(Player *player, int bet) {
         displayMatrix();// Pause for 200 milliseconds
     }
     jackpotParty(player,bet);
-    return 0;
+    return;
 }
 
 
@@ -821,8 +822,6 @@ int main() {
                 wait();
                 break;
             case 7:
-                //game5();
-
                 system("cls");
                 printf("______________________________________________________________________________________________________________________\n\n");
                 printf("                                         777 JackPot : RULES\n");
@@ -848,7 +847,7 @@ int main() {
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
                     scanf("%d", &bet);
-                    while (game3(&player1, bet)) {
+                    while (game5(&player1, bet)) {
                         printf("Do you want to play again? (y/n): ");
                         char play_again;
                         scanf(" %c", &play_again);
@@ -888,7 +887,7 @@ int main() {
                     }
                     printf("Enter the bet amount (minimum %d): ", MIN_BET);
                     scanf("%d", &bet);
-                    while (game3(&player2, bet)) {
+                    while (game5(&player2, bet)) {
                         printf("Do you want to play again? (y/n): ");
                         char play_again;
                         scanf(" %c", &play_again);
