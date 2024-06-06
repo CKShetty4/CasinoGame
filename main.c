@@ -11,14 +11,12 @@
 #define ROWS 9
 #define COLS 9
 #define MINES 10
-/*
 #define SYMBOLS 7
 #define ROWS 3
 #define COLS 3
 
 char symbols[] = {'7', '@', '&', '?', '-', '[', '('};
 char matrix[ROWS][COLS];
-*/
 
 typedef struct {
     int balance;
@@ -326,12 +324,12 @@ int game4(Player* player1, Player* player2, int bet1, int bet2) {//High Card an 
   }
 }
 
-void game5(){
+/*void game5(){
 printf("Game is under Development");
-}
+}*/
 
 
-/*
+
 //---------------------------------------game5 begins here-----------------------------------------
 void generateMatrix() {
     for (int i = 0; i < ROWS; i++) {
@@ -350,7 +348,7 @@ void displayMatrix() {
     }
 }
 
-void jackpotParty(int bet) {
+void jackpotParty(Player *player,int bet) {
     int reward = 0;
     for (int i = 0; i < ROWS; i++) {
         if (matrix[i][0] == '7' && matrix[i][1] == '7' && matrix[i][2] == '7') {
@@ -368,38 +366,45 @@ void jackpotParty(int bet) {
     }
     printf("You won %d%% of your bet!\n", reward);
     if (reward > 0) {
-        printf("Congratulations, you got a reward of %d!\n", (bet * reward) / 100);
+            player->balance += (int)(bet * reward/100);
+            printf("\nCongratulations! You won %d. Current balance: %d\n", (int)(bet * reward/100), player->balance);
+            return;
     } else {
-        printf("Sorry, you lost your bet of %d.\n", bet);
+        printf("Sorry, you lost y`our bet of %d.\n", bet);
     }
 }
 
-int main() {
+int game5(Player *player, int bet) {
+    if (bet < MIN_BET) {
+        printf("Minimum bet is %d credits.\n", MIN_BET);
+        return 0;
+    }
+    if (bet > MAX_BET) {
+        printf("Maximum bet is %d credits.\n", MAX_BET);
+        return 0;
+    }
+    if (player->balance < bet) {
+        printf("Insufficient balance. Current balance: %d\n", player->balance);
+        return 0;
+    }
+
     srand(time(NULL));
-    int bet;
-    char playAgain;
-    do {
-        printf("Welcome to Jackpot Party Lucky Slots Game!\n");
-        printf("Enter your bet: ");
-        scanf("%d", &bet);
-        for (int i = 0; i < 20; i++) {
-            generateMatrix();
-            system("cls"); // Use "cls" on Windows
-            displayMatrix();
-            printf("Spinning...\n");
-            fflush(stdout);
-            usleep(200000);
-            system("cls"); // Use "cls" on Windows
-            displayMatrix();// Pause for 200 milliseconds
-        }
-        jackpotParty(bet);
-        printf("Do you want to play again? (y/n): ");
-        scanf(" %c", &playAgain);
-    } while (playAgain == 'y');
+    int n = rand() % 100 + 1;
+
+    for (int i = 0; i < 20; i++) {
+        generateMatrix();
+        system("cls"); // Use "cls" on Windows
+        displayMatrix();
+        printf("Spinning...\n");
+        fflush(stdout);
+        usleep(200000);
+        system("cls"); // Use "cls" on Windows
+        displayMatrix();// Pause for 200 milliseconds
+    }
+    jackpotParty(player,bet);
     return 0;
 }
 
-*/
 
 int main() {
     Player player1 = {0, 0};
@@ -816,8 +821,8 @@ int main() {
                 wait();
                 break;
             case 7:
-                game5();
-                /*
+                //game5();
+
                 system("cls");
                 printf("______________________________________________________________________________________________________________________\n\n");
                 printf("                                         777 JackPot : RULES\n");
@@ -918,7 +923,7 @@ int main() {
                 } else {
                     printf("Invalid player number. Please try again.\n");
                 }
-                */
+
                 wait();
                 break;
             case 8:
