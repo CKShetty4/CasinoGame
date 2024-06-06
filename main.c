@@ -12,10 +12,10 @@
 #define COLS 9
 #define MINES 10
 #define SYMBOLS 7
-#define ROWS 3
-#define COLS 3
+#define ROWSJ 3
+#define COLSJ 3
 
-char symbols[] = {'7', '@', '&', '?', '-', '[', '('};
+char symbols[] = {'7', '@', '&', '?', '#', '*', '$'};
 char matrix[ROWS][COLS];
 
 typedef struct {
@@ -93,6 +93,8 @@ int game1(Player *player, int bet){ //Number Hunt Game
     }
 }
 
+
+
 int game2(Player *player, int bet){//Number Ambush Game
 
     int n, count = 1;
@@ -135,6 +137,8 @@ int game2(Player *player, int bet){//Number Ambush Game
     printf("\nSorry, you lost. Current balance: %d\n", player->balance);
     return;
 }
+
+
 
 //-----------------------------------Mines Game Code Starts here-------------------------------------------
 void initializeBoard(Cell board[ROWS][COLS]) {//The function resets the board.
@@ -324,24 +328,34 @@ int game4(Player* player1, Player* player2, int bet1, int bet2) {//High Card an 
   }
 }
 
-/*void game5(){
-printf("Game is under Development");
-}*/
 
+//-----------------------------------777 JackPot Game Code Starts here-------------------------------------------
 
-
-//---------------------------------------game5 begins here-----------------------------------------
 void generateMatrix() {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
+    for (int i = 0; i < ROWSJ; i++) {
+        for (int j = 0; j < COLSJ; j++) {
             matrix[i][j] = symbols[rand() % SYMBOLS];
         }
     }
 }
 
-void displayMatrix() {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
+void displayMatrix(Player *player,int bet) {
+    system("cls");
+    printf("______________________________________________________________________________________________________________________\n\n");
+    printf("                                         777 JackPot : RULES\n");
+    printf("______________________________________________________________________________________________________________________\n\n");
+    printf("You will play 777 JackPot. The rules are as follows:\n");
+    printf("- The game has a grid of 2x2 slots. Items will be generated randomly after placing bet.\n");
+    printf("- You will start by placing the bet of you choice.\n");
+    printf("- After placing the bet the generation will start.\n");
+    printf("- If the Player hits 777 jackpot he/she will be rewarded 100%% of their bet amount.\n");
+    printf("- If any other match is hit player will receive anywhere from 10%% to 50%% reward. \n");
+    printf("- And if no match is hit player looses his/her bet.\n");
+    printf("______________________________________________________________________________________________________________________\n\n");
+    printf("Player Balance: %d\n", player->balance);
+    printf("Current bet: %d\n\n\n",bet);
+    for (int i = 0; i < ROWSJ; i++) {
+        for (int j = 0; j < COLSJ; j++) {
             printf("%c ", matrix[i][j]);
         }
         printf("\n");
@@ -350,14 +364,14 @@ void displayMatrix() {
 
 void jackpotParty(Player *player,int bet) {
     int reward = 0;
-    for (int i = 0; i < ROWS; i++) {
+    for (int i = 0; i < ROWSJ; i++) {
         if (matrix[i][0] == '7' && matrix[i][1] == '7' && matrix[i][2] == '7') {
             reward = 100;
         } else if (matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) {
             reward = (rand() % 41) + 10;//random reward from 10% to 50%
         }
     }
-    for (int j = 0; j < COLS; j++) {
+    for (int j = 0; j < COLSJ; j++) {
         if (matrix[0][j] == '7' && matrix[1][j] == '7' && matrix[2][j] == '7') {
             reward = 100;
         } else if (matrix[0][j] == matrix[1][j] && matrix[1][j] == matrix[2][j]) {
@@ -390,22 +404,19 @@ int game5(Player *player, int bet) {
     }
 
     srand(time(NULL));
-    int n = rand() % 100 + 1;
-
-    for (int i = 0; i < 20; i++) {
+    int n = rand() % 36 + 15;//Generates a random number between 0 and 35. Adding 15 to the result shifts the range to 15 to 50.
+    for (int i = 0; i < n; i++) {
         generateMatrix();
-        system("cls"); // Use "cls" on Windows
-        displayMatrix();
         printf("Spinning...\n");
+        displayMatrix(player,bet);
         fflush(stdout);
-        usleep(200000);
-        system("cls"); // Use "cls" on Windows
-        displayMatrix();// Pause for 200 milliseconds
+        usleep(200000);// Pause for 200 miliseconds
     }
     jackpotParty(player,bet);
     return;
 }
 
+//-----------------------------------777 JackPot Game Code Ends here-------------------------------------------
 
 int main() {
     Player player1 = {0, 0};
@@ -827,13 +838,12 @@ int main() {
                 printf("                                         777 JackPot : RULES\n");
                 printf("______________________________________________________________________________________________________________________\n\n");
                 printf("You will play 777 JackPot. The rules are as follows:\n");
-                printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
-                printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
-                printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
-                printf("- For Each round the reward will increase by 5%%.\n");
-                printf("- You will have the option to withdraw or continue after each move.\n");
-                printf("- Your bet for each round of the game you continue is same.\n");
-                printf("- If you choose to withdraw, you will lose the current bet.\n");
+                printf("- The game has a grid of 2x2 slots. Items will be generated randomly after placing bet.\n");
+                printf("- You will start by placing the bet of you choice.\n");
+                printf("- After placing the bet the generation will start.\n");
+                printf("- If the Player hits 777 jackpot he/she will be rewarded 100%% of their bet amount.\n");
+                printf("- If any other match is hit player will receive anywhere from 10%% to 50%% reward. \n");
+                printf("- And if no match is hit player looses his/her bet.\n");
                 printf("______________________________________________________________________________________________________________________\n\n");
                 printf("Player 1 Balance: %d\n", player1.balance);
                 printf("Player 2 Balance: %d\n\n", player2.balance);
@@ -854,16 +864,15 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             system("cls");
                             printf("______________________________________________________________________________________________________________________\n\n");
-                            printf("                                          Coded Danger : RULES\n");
+                            printf("                                         777 JackPot : RULES\n");
                             printf("______________________________________________________________________________________________________________________\n\n");
-                            printf("You will play Coded Danger. The rules are as follows:\n");
-                            printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
-                            printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
-                            printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
-                            printf("- For Each round the reward will increase by 5%%.\n");
-                            printf("- You will have the option to withdraw or continue after each move.\n");
-                            printf("- Your bet for each round of the game you continue is same.\n");
-                            printf("- If you choose to withdraw, you will lose the current bet.\n");
+                            printf("You will play 777 JackPot. The rules are as follows:\n");
+                            printf("- The game has a grid of 2x2 slots. Items will be generated randomly after placing bet.\n");
+                            printf("- You will start by placing the bet of you choice.\n");
+                            printf("- After placing the bet the generation will start.\n");
+                            printf("- If the Player hits 777 jackpot he/she will be rewarded 100%% of their bet amount.\n");
+                            printf("- If any other match is hit player will receive anywhere from 10%% to 50%% reward. \n");
+                            printf("- And if no match is hit player looses his/her bet.\n");
                             printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
                             printf("Player 2 Balance: %d\n\n", player2.balance);
@@ -894,16 +903,15 @@ int main() {
                         if (play_again == 'y' || play_again == 'Y') {
                             system("cls");
                             printf("______________________________________________________________________________________________________________________\n\n");
-                            printf("                                          Coded Danger : RULES\n");
+                            printf("                                         777 JackPot : RULES\n");
                             printf("______________________________________________________________________________________________________________________\n\n");
-                            printf("You will play Coded Danger. The rules are as follows:\n");
-                            printf("- The game has a grid of 8x8 cells. 10 mines are placed randomly.\n");
-                            printf("- You will start with 0 revealed cells. Each unrevealed cell contains the number of adjacent mines.\n");
-                            printf("- Your goal is to reveal all non-mine cells. If you reveal a mine, you loose bet amount credits.\n");
-                            printf("- For Each round the reward will increase by 5%%.\n");
-                            printf("- You will have the option to withdraw or continue after each move.\n");
-                            printf("- Your bet for each round of the game you continue is same.\n");
-                            printf("- If you choose to withdraw, you will lose the current bet.\n");
+                            printf("You will play 777 JackPot. The rules are as follows:\n");
+                            printf("- The game has a grid of 2x2 slots. Items will be generated randomly after placing bet.\n");
+                            printf("- You will start by placing the bet of you choice.\n");
+                            printf("- After placing the bet the generation will start.\n");
+                            printf("- If the Player hits 777 jackpot he/she will be rewarded 100%% of their bet amount.\n");
+                            printf("- If any other match is hit player will receive anywhere from 10%% to 50%% reward. \n");
+                            printf("- And if no match is hit player looses his/her bet.\n");
                             printf("______________________________________________________________________________________________________________________\n\n");
                             printf("Player 1 Balance: %d\n", player1.balance);
                             printf("Player 2 Balance: %d\n", player2.balance);
