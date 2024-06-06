@@ -1,5 +1,5 @@
 # CasinoGame
-## **Welcome to the Quirky Text-Based Casino!**
+## **Welcome to the  Silly Slots terminal Casino!**
 Get ready for a side-splitting good time at the casino that won't leave you empty-handed (well, maybe figuratively). This unique program, built entirely in C, ditches the fancy graphics for a collection of hilarious text-based games that will test your luck and tickle your sense of humor.
 
 ## **Dive into a world of wacky entertainment:**
