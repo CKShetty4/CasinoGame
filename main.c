@@ -15,7 +15,7 @@
 #define ROWSJ 3
 #define COLSJ 3
 
-char symbols[] = {'7', '@', '&', '7', '#', '*', '$','7'};
+char symbols[] = {'7', '@', '&', '?', '#', '*', '$','+'};
 char matrix[ROWS][COLS];
 
 typedef struct {
