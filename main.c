@@ -15,7 +15,7 @@
 #define ROWSJ 3
 #define COLSJ 3
 
-char symbols[] = {'7', '@', '&', '?', '#', '*', '$'};
+char symbols[] = {'7', '@', '&', '7', '#', '*', '$','7'};
 char matrix[ROWS][COLS];
 
 typedef struct {
@@ -82,7 +82,8 @@ int game1(Player *player, int bet){ //Number Hunt Game
     scanf("%d", &user_guess);
     if (user_guess == secret_number) {
         player->balance += bet*0.1;
-        printf("Congratulations! You won %d. Current balance: %d\n", bet * 0.1, player->balance);
+        int gain=bet*0.1;
+        printf("Congratulations! You won %d. Current balance: %d\n", gain, player->balance);
         wait();
         return 1;
     } else {
@@ -366,19 +367,19 @@ void jackpotParty(Player *player,int bet) {
     int reward = 0;
     for (int i = 0; i < ROWSJ; i++) {
         if (matrix[i][0] == '7' && matrix[i][1] == '7' && matrix[i][2] == '7') {
-            reward = 100;
+            reward = 1000;
         } else if (matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) {
             reward = (rand() % 41) + 10;//random reward from 10% to 50%
         }
     }
     for (int j = 0; j < COLSJ; j++) {
         if (matrix[0][j] == '7' && matrix[1][j] == '7' && matrix[2][j] == '7') {
-            reward = 100;
+            reward = 1000;
         } else if (matrix[0][j] == matrix[1][j] && matrix[1][j] == matrix[2][j]) {
             reward = (rand() % 41) + 10;//random reward from 10% to 50%
         }
     }
-    printf("You won %d%% of your bet!\n", reward);
+    //printf("You won %d%% of your bet!\n", reward);
     if (reward > 0) {
             player->balance += (int)(bet * reward/100);
             printf("\nCongratulations! You won %d. Current balance: %d\n", (int)(bet * reward/100), player->balance);
@@ -684,7 +685,7 @@ int main() {
                 scanf("%d", &player_choice);
                 if (player_choice == 1) {
                     if (player1.balance < MIN_BET) {
-                        printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        printf("Insufficient balance in player 1 account. Current balance: %d\n", player1.balance);
                         wait();
                         break;
                     }
@@ -711,7 +712,7 @@ int main() {
                             printf("Player 1 Balance: %d\n", player1.balance);
                             printf("Player 2 Balance: %d\n\n", player2.balance);
                             if (player1.balance < MIN_BET) {
-                                printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                printf("Insufficient balance in player 1 account. Current balance: %d\n", player1.balance);
                                 wait();
                                 break;
                             }
@@ -724,7 +725,7 @@ int main() {
                     }
                 } else if (player_choice == 2) {
                     if (player2.balance < MIN_BET) {
-                        printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                        printf("Insufficient balance in player 2 account. Current balance: %d\n", player2.balance);
                         wait();
                         break;
                     }
@@ -751,7 +752,7 @@ int main() {
                             printf("Player 1 Balance: %d\n", player1.balance);
                             printf("Player 2 Balance: %d\n", player2.balance);
                             if (player2.balance < MIN_BET) {
-                                printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                printf("Insufficient balance in player 2 account. Current balance: %d\n", player2.balance);
                                 wait();
                                 break;
                             }
@@ -781,17 +782,17 @@ int main() {
                 printf("Player 1 Balance: %d\n", player1.balance);
                 printf("Player 2 Balance: %d\n\n", player2.balance);
                  if (player1.balance < MIN_BET) {
-                        printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                        printf("Insufficient balance in player 1 account. Current balance: %d\n", player1.balance);
+                        wait();
+                        break;
+                    }
+                 if (player2.balance < MIN_BET) {
+                        printf("Insufficient balance in player 2 account. Current balance: %d\n", player2.balance);
                         wait();
                         break;
                     }
                 printf("Enter player 1's bet: ");
                 scanf("%d", &bet1);
-                 if (player2.balance < MIN_BET) {
-                        printf("Insufficient balance. Current balance: %d\n", player2.balance);
-                        wait();
-                        break;
-                    }
                 printf("Enter player 2's bet: ");
                 scanf("%d", &bet2);
                 while (game4(&player1, &player2, bet1, bet2)) {
@@ -812,14 +813,14 @@ int main() {
                             printf("Player 1 Balance: %d\n", player1.balance);
                             printf("Player 2 Balance: %d\n", player2.balance);
                             if (player1.balance < MIN_BET) {
-                                printf("Insufficient balance. Current balance: %d\n", player1.balance);
+                                printf("Insufficient balance in player 1 account. Current balance: %d\n", player1.balance);
                                 wait();
                                 break;
                     }
                         printf("Enter player 1's bet: ");
                         scanf("%d", &bet1);
                          if (player2.balance < MIN_BET) {
-                                printf("Insufficient balance. Current balance: %d\n", player2.balance);
+                                printf("Insufficient balance in player 2 account. Current balance: %d\n", player2.balance);
                                 wait();
                                 break;
                             }
